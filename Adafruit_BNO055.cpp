@@ -330,6 +330,18 @@ imu::Vector<3> Adafruit_BNO055::getVector(adafruit_vector_type_t vector_type)
 
 /**************************************************************************/
 /*!
+    @brief  Inserts 6 byte representation of sepecified vector into the
+      specified destination buffer
+*/
+/**************************************************************************/
+void Adafruit_BNO055::getVectorBytes(adafruit_vector_type_t vector_type, uint8_t * outBuffer)
+{
+  /* Read vector data (6 bytes) into out buffer */
+  readLen((adafruit_bno055_reg_t)vector_type, outBuffer, 6);
+}
+
+/**************************************************************************/
+/*!
     @brief  Gets a quaternion reading from the specified source
 */
 /**************************************************************************/
