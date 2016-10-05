@@ -292,7 +292,6 @@ imu::Vector<3> Adafruit_BNO055::getVector(adafruit_vector_type_t vector_type)
   x = ((int16_t)buffer[0]) | (((int16_t)buffer[1]) << 8);
   y = ((int16_t)buffer[2]) | (((int16_t)buffer[3]) << 8);
   z = ((int16_t)buffer[4]) | (((int16_t)buffer[5]) << 8);
-
   /* Convert the value to an appropriate range (section 3.6.4) */
   /* and assign the value to the Vector type */
   switch(vector_type)
@@ -337,6 +336,7 @@ imu::Vector<3> Adafruit_BNO055::getVector(adafruit_vector_type_t vector_type)
 void Adafruit_BNO055::getVectorBytes(adafruit_vector_type_t vector_type, uint8_t * outBuffer)
 {
   /* Read vector data (6 bytes) into out buffer */
+  memset(outBuffer, 0, 6);
   readLen((adafruit_bno055_reg_t)vector_type, outBuffer, 6);
 }
 
