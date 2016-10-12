@@ -83,7 +83,7 @@ bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode)
   failedContacts = 0;
   while (read8(BNO055_CHIP_ID_ADDR) != BNO055_ID)
   {
-    if (failedContacts ++ > 10){ return false; }
+    if (failedContacts++ > 10){ return false; }
     delay(10);
   }
   delay(50);
