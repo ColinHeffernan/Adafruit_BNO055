@@ -54,8 +54,6 @@ Adafruit_BNO055::Adafruit_BNO055(int32_t sensorID, uint8_t address)
 /**************************************************************************/
 bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode)
 {
-  /* tracks the number of failed contact attemps */
-  int failedContacts;
   /* Enable I2C */
   Wire.begin();
 
@@ -80,10 +78,8 @@ bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode)
 
   /* Reset */
   write8(BNO055_SYS_TRIGGER_ADDR, 0x20);
-  failedContacts = 0;
   while (read8(BNO055_CHIP_ID_ADDR) != BNO055_ID)
   {
-    if (failedContacts++ > 10){ return false; }
     delay(10);
   }
   delay(50);
