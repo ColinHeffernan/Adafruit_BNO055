@@ -605,21 +605,24 @@ bool Adafruit_BNO055::write8(adafruit_bno055_reg_t reg, byte value)
 byte Adafruit_BNO055::read8(adafruit_bno055_reg_t reg )
 {
   byte value = 0;
-
+  Serial.println("read8 begin");
   Wire.beginTransmission(_address);
   #if ARDUINO >= 100
     Wire.write((uint8_t)reg);
   #else
     Wire.send(reg);
   #endif
+  Serial.println("ending transmission");
   Wire.endTransmission();
+  Serial.println("requesting");
   Wire.requestFrom(_address, (byte)1);
+  Serial.println("reading");
   #if ARDUINO >= 100
     value = Wire.read();
   #else
     value = Wire.receive();
   #endif
-
+  Serial.println("read");
   return value;
 }
 
@@ -630,24 +633,31 @@ byte Adafruit_BNO055::read8(adafruit_bno055_reg_t reg )
 /**************************************************************************/
 bool Adafruit_BNO055::readLen(adafruit_bno055_reg_t reg, byte * buffer, uint8_t len)
 {
+  Serial.println("readLen begin");
   Wire.beginTransmission(_address);
+  Serial.println("writing");
   #if ARDUINO >= 100
     Wire.write((uint8_t)reg);
   #else
     Wire.send(reg);
   #endif
+  Serial.println("end transmission");
   Wire.endTransmission();
-  Wire.requestFrom(_address, (byte)len);
+  Serial.println("requesting");
+  Wire.requestFrom(_address, (byte)len, true);
 
   for (uint8_t i = 0; i < len; i++)
   {
+    Serial.print("reading byte ");
+    Serial.print(i+1, DEC); Serial.print(" of ");
+    Serial.println(len, DEC);
     #if ARDUINO >= 100
       buffer[i] = Wire.read();
     #else
       buffer[i] = Wire.receive();
     #endif
   }
-
+  Serial.println("done reading");
   /* ToDo: Check for errors! */
   return true;
 }
