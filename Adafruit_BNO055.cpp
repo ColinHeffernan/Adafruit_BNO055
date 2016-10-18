@@ -41,6 +41,8 @@ Adafruit_BNO055::Adafruit_BNO055(int32_t sensorID, uint8_t address)
 {
   _sensorID = sensorID;
   _address = address;
+  _oldAccel = 0;
+  _newAccel = 0;
 }
 
 /***************************************************************************
@@ -571,6 +573,17 @@ bool Adafruit_BNO055::isFullyCalibrated(void)
     return true;
 }
 
+bool Adafruit_BNO055::newData()
+{
+  // check the 8 lsb's of the accelerometer to see if new data is available
+  // unfortunately the BNO055 does not have a data ready interrupt, so for
+  //  now this will do the trick
+  bool diff;
+  _newAccel = read8(BNO055_ACCEL_DATA_Z_LSB_ADDR);
+  diff = _newAccel ^ _oldAccel;
+  _oldAccel = _newAccel;
+  return diff;
+}
 
 /***************************************************************************
  PRIVATE FUNCTIONS
@@ -619,7 +632,6 @@ byte Adafruit_BNO055::read8(adafruit_bno055_reg_t reg )
   #else
     value = Wire.receive();
   #endif
-
   return value;
 }
 
